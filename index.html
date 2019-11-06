@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Puzzle</title>
+
+    <meta charset='UTF-8' />
+    <meta name='author' content='Jovana Boskovic' />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+
+    <link rel='stylesheet' type='text/css' href='style.css'>
+
+</head>
+
+<body>
+    <div id='btn-side'>
+        <button type='button' onclick="initialize_game()" class='btn_group'>Start</button>
+        <button type='button' onclick='restart_game()' class='btn_group'>Restart</button>
+        <button type='button' onclick='show_help()' class='btn_group'>Help</button>
+        <button type='button' onclick='show_moves()' class='btn_group'>Show</button>
+
+    </div>
+
+    <script type='text/javascript' src='functions.js'></script>
+
+    <div id='game_window'>
+        <div id='game'>
+
+        </div>
+        <div id='game_solved'>
+
+        </div>
+    </div>
+
+
+</body>
+
+</html>
