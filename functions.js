@@ -3,23 +3,54 @@ let win_puzzle = [[1, 2, 3], [4, 5, 6], [7, 8, 0]];
 
 let helper = [1, 2, 3, 4, 5, 6, 7, 8, 0];
 
+let indikator_for_start_btn = 0;
+
+let moves_to_solve = [];
 
 function initialize_game() {
-    shuffle(helper);
-    let k = 0;
-    for (let i = 0; i < 3; i++) {
-        for (let j = 0; j < 3; j++) {
-            puzzle[i][j] = helper[k];
-            k++;
+    if (indikator_for_start_btn == 0) {
+        indikator_for_start_btn = 1;
+        shuffle(helper);
+        let k = 0;
+        for (let i = 0; i < 3; i++) {
+            for (let j = 0; j < 3; j++) {
+                puzzle[i][j] = helper[k];
+                k++;
+            }
         }
-    }
 
-    draw_puzzle();
+        draw_puzzle();
+    }
 
 }
 function show_moves() {
-    astar();
+    if (indikator_for_start_btn == 1) {
+        if (astar() == -1) {
+            console.log("game lost");
+            return;
+        }
+        console.log(moves_to_solve);
+
+        timer_for_show = window.setInterval(tmp, 1000
+        );
+
+    }
 }
+let interval = 0;
+let timer_for_show = 0;
+function tmp() {
+    if (interval < moves_to_solve.length) {
+        puzzle = moves_to_solve[interval];
+        interval++;
+        draw_puzzle();
+    } else {
+        interval = 0;
+        window.clearInterval(timer_for_show);
+        console.log("Finished");
+    }
+}
+
+
 
 function draw_puzzle() {
     let grid = "";
@@ -86,7 +117,8 @@ function shuffle(array) {
 }
 
 function restart_game() {
-    document.getElementById('game_window').innerHTML = ""
+    document.getElementById('game_window').innerHTML = "";
+    indikator_for_start_btn = 0;
     initialize_game();
 }
 
@@ -97,18 +129,23 @@ function tile_click(id) {
     var zero_coordinates = check_neighbors(i, j);
     i = Number(i);
     j = Number(j);
-    let x_0 = Number(zero_coordinates[0]);
-    let y_0 = Number(zero_coordinates[2]);
-    if (i == x_0 && j == y_0) {
+    let x_0 = zero_coordinates[0]
+    let y_0 = zero_coordinates[1];
+
+    if (puzzle[i][j] == 0) {
         return;
     }
 
-    if (x_0 != -1 && y_0 != -1) {
-        puzzle[x_0][y_0] = puzzle[i][j];
-        puzzle[i][j] = 0;
-        draw_puzzle();
-        check_game();
+    if (x_0 == -1 || y_0 == -1) {
+        return;
     }
+
+
+    puzzle[x_0][y_0] = puzzle[i][j];
+    puzzle[i][j] = 0;
+    draw_puzzle();
+    check_game();
+
 
 }
 function check_game() {
@@ -151,7 +188,7 @@ function check_neighbors(x, y) {
         y_0 = y + 1;
     }
 
-    return (x_0 + " " + y_0);
+    return [x_0, y_0];
 
 }
 
@@ -309,7 +346,7 @@ function astar() {
                 paths.push(deserialize(element));
             });
 
-            console.log(paths);
+            moves_to_solve = paths;
             return 1;
 
         }
@@ -343,3 +380,7 @@ function astar() {
 
     return -1;
 }
+
+
+
+
