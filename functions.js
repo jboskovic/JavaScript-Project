@@ -1,12 +1,12 @@
-var puzzle = [[1, 2, 3], [4, 5, 6], [7, 8, 0]];
-var helper = [1, 2, 3, 4, 5, 6, 7, 8, 0];
+let puzzle = [[1, 2, 3], [4, 5, 6], [7, 8, 0]];
+let win_puzzle = [[1, 2, 3], [4, 5, 6], [7, 8, 0]];
+
+let helper = [1, 2, 3, 4, 5, 6, 7, 8, 0];
 
 
-
-var win_puzzle = [[1, 2, 3], [4, 5, 6], [7, 8, 0]];
 function initialize_game() {
     shuffle(helper);
-    var k = 0;
+    let k = 0;
     for (let i = 0; i < 3; i++) {
         for (let j = 0; j < 3; j++) {
             puzzle[i][j] = helper[k];
@@ -22,7 +22,7 @@ function show_moves() {
 }
 
 function draw_puzzle() {
-    var grid = "";
+    let grid = "";
 
     grid += "<div class='grid-container'>\n";
     grid += "<div class='grid'>\n";
@@ -91,25 +91,28 @@ function restart_game() {
 }
 
 function tile_click(id) {
-    var i = id[0];
-    var j = id[1];
+    let i = id[0];
+    let j = id[1];
 
     var zero_coordinates = check_neighbors(i, j);
-    var x_0 = zero_coordinates[0] - '0';
-    var y_0 = zero_coordinates[2] - '0';
+    i = Number(i);
+    j = Number(j);
+    let x_0 = Number(zero_coordinates[0]);
+    let y_0 = Number(zero_coordinates[2]);
+    if (i == x_0 && j == y_0) {
+        return;
+    }
 
     if (x_0 != -1 && y_0 != -1) {
-        i = i - '0';
-        j = j - '0';
         puzzle[x_0][y_0] = puzzle[i][j];
-        puzzle[i][j] = '0';
+        puzzle[i][j] = 0;
         draw_puzzle();
         check_game();
     }
 
 }
 function check_game() {
-    var win = true;
+    let win = true;
 
     for (let i = 0; i < 3; i++) {
         for (let j = 0; j < 3; j++) {
@@ -125,11 +128,11 @@ function check_game() {
     }
 }
 function check_neighbors(x, y) {
-    var x_0 = -1;
-    var y_0 = -1;
+    let x_0 = -1;
+    let y_0 = -1;
 
-    x = x - '0';
-    y = y - '0';
+    x = Number(x);
+    y = Number(y);
 
     if (x != 0 && puzzle[x - 1][y] == 0) {
         x_0 = x - 1;
@@ -153,7 +156,7 @@ function check_neighbors(x, y) {
 }
 
 function copy_matrix(old_matrix) {
-    var new_matrix = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
+    let new_matrix = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
     for (let i = 0; i < 3; i++) {
         for (let j = 0; j < 3; j++) {
             new_matrix[i][j] = old_matrix[i][j];
@@ -163,7 +166,7 @@ function copy_matrix(old_matrix) {
     return new_matrix;
 }
 function serialize(state) {
-    var serialized = []
+    let serialized = []
     for (let i = 0; i < 3; i++) {
         for (let j = 0; j < 3; j++) {
             serialized.push(String(state[i][j]))
@@ -174,18 +177,18 @@ function serialize(state) {
 }
 
 function deserialize(serialized) {
-    var serialized_list = serialized.split(":");
+    let serialized_list = serialized.split(":");
 
-    var deserialized = [[serialized_list[0] - '0', serialized_list[1] - '0', serialized_list[2] - '0'], [serialized_list[3] - '0', serialized_list[4] - '0', serialized_list[5] - '0'], [serialized_list[6] - '0', serialized_list[7] - '0', serialized_list[8] - '0']];
+    let deserialized = [[Number(serialized_list[0]), Number(serialized_list[1]), Number(serialized_list[2])], [Number(serialized_list[3]), Number(serialized_list[4]), Number(serialized_list[5])], [Number(serialized_list[6]), Number(serialized_list[7]), Number(serialized_list[8])]];
 
     return deserialized;
 }
 
 
 function get_neighbors(state) {
-    var deserialized = deserialize(state);
+    let deserialized = deserialize(state);
 
-    neighbors = [];
+    let neighbors = [];
 
     let blank_i = -1;
     let blank_j = -1;
@@ -199,8 +202,8 @@ function get_neighbors(state) {
         }
     }
 
-    i_0 = blank_i;
-    j_0 = blank_j;
+    let i_0 = blank_i;
+    let j_0 = blank_j;
 
 
     if (i_0 > 0) {
@@ -238,12 +241,12 @@ function get_neighbors(state) {
 
 function h(state) {
 
-    var deserialized = deserialize(state);
+    let deserialized = deserialize(state);
 
-    H = 0;
+    let H = 0;
 
-    for (i = 0; i < 3; i++) {
-        for (j = 0; j < 3; j++) {
+    for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 3; j++) {
             if (deserialized[i][j] == 0) {
                 H += 2 - i + 2 - j;
             }
@@ -262,24 +265,24 @@ function h(state) {
 
 
 function astar() {
-    var start_state = serialize(puzzle);
-    var end_state = serialize(win_puzzle);
+    let start_state = serialize(puzzle);
+    let end_state = serialize(win_puzzle);
 
 
-    var open_list = new Set();
+    let open_list = new Set([]);
     open_list.add(start_state);
-    var closed_list = new Set([]);
+    let closed_list = new Set([]);
 
-    var D = {};
+    let D = {};
     D[start_state] = 0;
 
-    var parent = {};
+    let parent = {};
 
     parent[start_state] = -1;
 
     while (open_list.size > 0) {
-        var n = -1;
-        var min_d = Infinity;
+        let n = -1;
+        let min_d = Infinity;
         for (let v of open_list) {
             if (D[v] + h(v) < min_d) {
                 n = v;
@@ -293,7 +296,7 @@ function astar() {
         }
 
         if (n == end_state) {
-            var path = [];
+            let path = [];
 
             while (n != -1) {
                 path.push(n);
@@ -301,7 +304,7 @@ function astar() {
             }
 
             path.reverse();
-            var paths = [];
+            let paths = [];
             path.forEach(function (element) {
                 paths.push(deserialize(element));
             });
@@ -311,10 +314,10 @@ function astar() {
 
         }
 
-        var neigh = get_neighbors(n);
+        let neigh = get_neighbors(n);
         for (let i = 0; i < neigh.length; i++) {
-            var m = neigh[i];
-            var weight = 1
+            let m = neigh[i];
+            let weight = 1
             if (!open_list.has(m) && !closed_list.has(m)) {
                 open_list.add(m);
                 parent[m] = n;
