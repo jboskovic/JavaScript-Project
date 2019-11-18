@@ -7,6 +7,9 @@ let indikator_for_start_btn = 0;
 
 let moves_to_solve = [];
 
+let src_part = "images/Friends/";
+let src_picture = "images/Friends/Friends.jpg";
+
 function initialize_game() {
     if (indikator_for_start_btn == 0) {
         indikator_for_start_btn = 1;
@@ -31,14 +34,14 @@ function show_moves() {
         }
         console.log(moves_to_solve);
 
-        timer_for_show = window.setInterval(tmp, 1000
+        timer_for_show = window.setInterval(interval_function, 1000
         );
 
     }
 }
 let interval = 0;
 let timer_for_show = 0;
-function tmp() {
+function interval_function() {
     if (interval < moves_to_solve.length) {
         puzzle = moves_to_solve[interval];
         interval++;
@@ -62,7 +65,7 @@ function draw_puzzle() {
     for (let i = 0; i < 3; i++) {
         grid += "<div class='row'>\n";
         for (let j = 0; j < 3; j++) {
-            grid += "<div class='cell' onclick='tile_click(this.id)' data-pos='" + i + "," + j + "' " + "id='" + i + j + "'" + "> <img src='images/part" + puzzle[i][j] + ".jpg' alt=''>" + "</div>\n";
+            grid += "<div class='cell' onclick='tile_click(this.id)' data-pos='" + i + "," + j + "' " + "id='" + i + j + "'" + "> <img src='" + src_part + "part" + puzzle[i][j] + ".jpg' alt=''>" + "</div>\n";
         }
         grid += "</div>\n";
     }
@@ -75,23 +78,9 @@ function draw_puzzle() {
     grid += "</div>\n";
 
 
-
-    grid += "<div class='grid-container'>\n";
-    grid += "<div class='grid'>\n";
-
-
-    for (let i = 0; i < 3; i++) {
-        grid += "<div class='row'>\n";
-        for (let j = 0; j < 3; j++) {
-            grid += "<div class='cell' data-pos='" + i + "," + j + "' " + "id='" + i + j + "'" + "> <img src='images/part" + win_puzzle[i][j] + ".jpg' alt = ''>" + "</div>\n";
-
-        }
-        grid += "</div>\n";
-    }
-
-
-    grid += "</div>\n";
-    grid += "</div>\n";
+    grid += "<div id='image_help'>\n";
+    grid += "<img src='" + src_picture + "'>";
+    grid += "</div>"
 
     document.getElementById('game_window').innerHTML = grid;
 }
@@ -381,6 +370,19 @@ function astar() {
     return -1;
 }
 
-
-
-
+function change_image(id, src) {
+    src_picture = src;
+    if (id == "Friends") {
+        src_part = "images/Friends/";
+        draw_puzzle();
+    } else if (id == "TheSimpsons") {
+        src_part = "images/TheSimpsons/";
+        draw_puzzle();
+    } else if (id == "TheLionKing") {
+        src_part = "images/TheLionKing/";
+        draw_puzzle();
+    } else if (id == "LiloAndStitch") {
+        src_part = "images/LiloAndStitch/";
+        draw_puzzle();
+    }
+}
