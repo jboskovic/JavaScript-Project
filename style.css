@@ -84,3 +84,10 @@ img{
     width: 100px;
     height: 100px;
 }
+#win_image{
+    visibility: hidden;
+    width: 100%;
+    height: 100%;
+    opacity: 0.5;
+    filter: alpha(opacity=50);
+}

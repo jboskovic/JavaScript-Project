@@ -1,60 +1,83 @@
-let puzzle = [[1, 2, 3], [4, 5, 6], [7, 8, 0]];
-let win_puzzle = [[1, 2, 3], [4, 5, 6], [7, 8, 0]];
+'use strict';
+let puzzle;
+let win_puzzle;
+let helper;
+let indicator_for_start_btn;
+let moves_to_solve;
+let src_part;
+let src_picture;
+let interval;
+let timer_for_show;
+let indicator_for_show_btn;
+let win;
 
-let helper = [1, 2, 3, 4, 5, 6, 7, 8, 0];
+function initialize_variables() {
+    puzzle = [[1, 2, 3], [4, 5, 6], [7, 8, 0]];
+    win_puzzle = [[1, 2, 3], [4, 5, 6], [7, 8, 0]];
 
-let indikator_for_start_btn = 0;
+    helper = [1, 2, 3, 4, 5, 6, 7, 8, 0];
 
-let moves_to_solve = [];
+    indicator_for_start_btn = 0;
 
-let src_part = "images/Friends/";
-let src_picture = "images/Friends/Friends.jpg";
+
+    moves_to_solve = [];
+
+    src_part = "images/Friends/";
+    src_picture = "images/Friends/Friends.jpg";
+
+    interval = 0;
+    timer_for_show = 0;
+    indicator_for_show_btn = 0;
+
+    win = false;
+}
+
+
+
+
+function shuffle(array) {
+    let counter = array.length;
+
+    // While there are elements in the array
+    while (counter > 0) {
+        // Pick a random index
+        let index = Math.floor(Math.random() * counter);
+
+        // Decrease counter by 1
+        counter--;
+
+        // And swap the last element with it
+        let temp = array[counter];
+        array[counter] = array[index];
+        array[index] = temp;
+    }
+
+    return array;
+}
+function start_button_clicked() {
+    if (indicator_for_start_btn == 0) {
+        initialize_game();
+        indicator_for_start_btn = 1;
+
+    } else {
+        return;
+    }
+}
 
 function initialize_game() {
-    if (indikator_for_start_btn == 0) {
-        indikator_for_start_btn = 1;
-        shuffle(helper);
-        let k = 0;
-        for (let i = 0; i < 3; i++) {
-            for (let j = 0; j < 3; j++) {
-                puzzle[i][j] = helper[k];
-                k++;
-            }
+    shuffle(helper);
+    let k = 0;
+    for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 3; j++) {
+            puzzle[i][j] = helper[k];
+            k++;
         }
-
-        draw_puzzle();
     }
 
+    draw_puzzle();
+
+
 }
-function show_moves() {
-    if (indikator_for_start_btn == 1) {
-        if (astar() == -1) {
-            console.log("game lost");
-            return;
-        }
-        console.log(moves_to_solve);
-
-        timer_for_show = window.setInterval(interval_function, 1000
-        );
-
-    }
-}
-let interval = 0;
-let timer_for_show = 0;
-function interval_function() {
-    if (interval < moves_to_solve.length) {
-        puzzle = moves_to_solve[interval];
-        interval++;
-        draw_puzzle();
-    } else {
-        interval = 0;
-        window.clearInterval(timer_for_show);
-        console.log("Finished");
-    }
-}
-
-
-
 function draw_puzzle() {
     let grid = "";
 
@@ -82,42 +105,28 @@ function draw_puzzle() {
     grid += "<img src='" + src_picture + "'>";
     grid += "</div>"
 
-    document.getElementById('game_window').innerHTML = grid;
-}
-
-function shuffle(array) {
-    let counter = array.length;
-
-    // While there are elements in the array
-    while (counter > 0) {
-        // Pick a random index
-        let index = Math.floor(Math.random() * counter);
-
-        // Decrease counter by 1
-        counter--;
-
-        // And swap the last element with it
-        let temp = array[counter];
-        array[counter] = array[index];
-        array[index] = temp;
+    let elem = document.getElementById('game_window');
+    if (typeof elem != 'undefined' && elem != null) {
+        elem.innerHTML = grid;
     }
 
-    return array;
 }
 
-function restart_game() {
-    document.getElementById('game_window').innerHTML = "";
-    indikator_for_start_btn = 0;
-    initialize_game();
-}
 
 function tile_click(id) {
+    if (indicator_for_start_btn == 0 || indicator_for_show_btn == 1) {
+        return;
+    }
     let i = id[0];
     let j = id[1];
 
-    var zero_coordinates = check_neighbors(i, j);
     i = Number(i);
     j = Number(j);
+    if (i < 0 || i > 2 || j < 0 || j > 2) {
+        console.log("greska");
+    }
+
+    let zero_coordinates = check_neighbors(i, j);
     let x_0 = zero_coordinates[0]
     let y_0 = zero_coordinates[1];
 
@@ -137,28 +146,9 @@ function tile_click(id) {
 
 
 }
-function check_game() {
-    let win = true;
-
-    for (let i = 0; i < 3; i++) {
-        for (let j = 0; j < 3; j++) {
-            if (puzzle[i][j] != win_puzzle[i][j]) {
-                win = false;
-                break;
-            }
-        }
-    }
-
-    if (win == true) {
-        console.log("you have won");
-    }
-}
 function check_neighbors(x, y) {
     let x_0 = -1;
     let y_0 = -1;
-
-    x = Number(x);
-    y = Number(y);
 
     if (x != 0 && puzzle[x - 1][y] == 0) {
         x_0 = x - 1;
@@ -179,6 +169,76 @@ function check_neighbors(x, y) {
 
     return [x_0, y_0];
 
+}
+function show_button_clicked() {
+    if (indicator_for_show_btn == 0 && indicator_for_start_btn == 1) {
+        show_moves();
+        indicator_for_show_btn = 1;
+    } else {
+        return;
+    }
+
+}
+function show_moves() {
+
+    if (astar() == -1) {
+        console.log("game lost");
+        return;
+    }
+    console.log(moves_to_solve);
+
+    timer_for_show = window.setInterval(interval_function, 1000);
+
+}
+
+
+function interval_function() {
+    if (interval < moves_to_solve.length) {
+        puzzle = moves_to_solve[interval];
+        interval++;
+        draw_puzzle();
+    } else {
+        interval = 0;
+        window.clearInterval(timer_for_show);
+        console.log("Finished");
+    }
+}
+
+function restart_button_clicked() {
+    //console.log(indicator_for_show_btn);
+    //console.log(indicator_for_start_btn);
+    if (indicator_for_show_btn == 1) {
+        return;
+    } else if (indicator_for_start_btn == 0) {
+        return;
+    } else {
+        restart_game();
+    }
+}
+function restart_game() {
+    document.getElementById('game_window').innerHTML = "";
+    initialize_variables();
+    indicator_for_start_btn = 1;
+    initialize_game();
+}
+
+
+function check_game() {
+    let helper = true;
+
+    for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 3; j++) {
+            if (puzzle[i][j] != win_puzzle[i][j]) {
+                helper = false;
+                break;
+            }
+        }
+    }
+
+    if (helper == true) {
+        win = true;
+        win_animation();
+    }
 }
 
 function copy_matrix(old_matrix) {
@@ -370,19 +430,33 @@ function astar() {
     return -1;
 }
 
+
+
 function change_image(id, src) {
-    src_picture = src;
-    if (id == "Friends") {
-        src_part = "images/Friends/";
-        draw_puzzle();
-    } else if (id == "TheSimpsons") {
-        src_part = "images/TheSimpsons/";
-        draw_puzzle();
-    } else if (id == "TheLionKing") {
-        src_part = "images/TheLionKing/";
-        draw_puzzle();
-    } else if (id == "LiloAndStitch") {
-        src_part = "images/LiloAndStitch/";
-        draw_puzzle();
+    if (indicator_for_show_btn == 0 && indicator_for_start_btn == 0) {
+        src_picture = src;
+        if (id == "Friends") {
+            src_part = "images/Friends/";
+            draw_puzzle();
+        } else if (id == "TheSimpsons") {
+            src_part = "images/TheSimpsons/";
+            draw_puzzle();
+        } else if (id == "TheLionKing") {
+            src_part = "images/TheLionKing/";
+            draw_puzzle();
+        } else if (id == "LiloAndStitch") {
+            src_part = "images/LiloAndStitch/";
+            draw_puzzle();
+        }
     }
 }
+
+function win_animation() {
+    //TODO
+
+    return;
+
+}
+
+initialize_variables();
+draw_puzzle();
