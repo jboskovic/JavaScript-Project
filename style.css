@@ -24,6 +24,18 @@ body{
     left: 620px;
 
 }
+#score{
+    width: 500px;
+    height: 80px;
+    position: absolute;
+    left: 300px;
+    top: 550px;
+}
+#scoreText{
+    color : blue;
+    font-size : 30px;
+    font-family: "Comic Sans MS", cursive, sans-serif;
+}
 .image_holder{
     position: absolute;
     top: 200px;

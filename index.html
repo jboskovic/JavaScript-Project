@@ -9,25 +9,25 @@
     <meta name='viewport' content='width=device-width, initial-scale=1.0' />
 
     <link rel='stylesheet' type='text/css' href='style.css'>
-    <script type='text/javascript' src='functions.js'></script>
+    <script type='text/javascript' src='organized.js'></script>
 
 
 </head>
 
-<body>
+<body onload="startNewGame()">
     <div id='btn-side'>
-        <button type='button' onclick='start_button_clicked()' class='btn_group'>Start</button>
-        <button type='button' onclick='restart_button_clicked()' class='btn_group'>Restart</button>
-        <button type='button' onclick='show_button_clicked()' class='btn_group'>Show</button>
+        <!-- <button type='button' onclick='GameArea.start()' class='btn_group'>Start</button>-->
+        <button type='button' onclick='GameArea.restart()' class='btn_group'>Restart</button>
+        <button type='button' onclick='GameArea.show()' class='btn_group'>Show</button>
 
     </div>
     <div class='image_holder'>
-        <img onclick='change_image(this.id, this.src)' src='images/Friends/Friends.jpg' class='images' id='Friends'>
-        <img onclick='change_image(this.id, this.src)' src='images/LiloAndStitch/LiloAndStitch.jpg' class='images'
+        <img onclick='GameArea.image(this.id, this.src)' src='images/Friends/Friends.jpg' class='images' id='Friends'>
+        <img onclick='GameArea.image(this.id, this.src)' src='images/LiloAndStitch/LiloAndStitch.jpg' class='images'
             id='LiloAndStitch'>
-        <img onclick='change_image(this.id, this.src)' src='images/TheLionKing/TheLionKing.jpg' class='images'
+        <img onclick='GameArea.image(this.id, this.src)' src='images/TheLionKing/TheLionKing.jpg' class='images'
             id='TheLionKing'>
-        <img onclick='change_image(this.id, this.src)' src='images/TheSimpsons/TheSimpsons.jpg' class='images'
+        <img onclick='GameArea.image(this.id, this.src)' src='images/TheSimpsons/TheSimpsons.jpg' class='images'
             id='TheSimpsons'>
 
     </div>
@@ -40,6 +40,11 @@
         <div id='game_solved'>
 
         </div>
+
+    </div>
+
+    <div id='score'>
+        <p id='scoreText'> </p>
     </div>
 
 
