@@ -1,0 +1,99 @@
+body{
+    position: absolute;
+    margin: auto auto;
+    background-color: white;   
+    position: relative;
+    background-image: url('./images/backgroundPuzzle.jpg');
+    
+}
+.sideLeft{
+    position: absolute;
+    display: inline-block;
+    top: 10px;
+    left: 50px;
+}
+.image_holder{
+    width: 150px;
+    height: 500px;
+}
+.btnSide{
+    height: 150px;
+    width: 150px;
+
+}
+
+.sideCentar{
+    position: absolute;
+    left: 350px;
+    top: 10px;
+    display: inline-block;
+}
+.grid{
+    width: 560px;
+    height: 500px;
+    border-radius: 3px;
+}
+#score{
+    position: relative;
+    top: 20px;
+}
+
+.sideRight{
+    display: inline-block;
+    position: absolute;
+    left: 1100px;
+    top: 10px;
+}
+.formClass{
+    position: relative;
+    top: 20px;
+}
+.scoreList{
+    position: relative;
+    top:30px;
+}
+#image_help{
+    position: relative;
+    height: 200px;
+    width: 200px;
+
+}
+
+#scoreText{
+    color : blue;
+    font-size : 30px;
+    font-family: "Comic Sans MS", cursive, sans-serif;
+}
+.row{
+    height: 33.3%;
+}
+
+.cell{
+    width: 33.3%;
+    height: 100%;
+    float: left;
+    text-align: center;
+    font-size: 150%;
+    font-family: Arial;
+    font-weight: bold;
+    position:relative;
+}
+.cell:hover {
+    opacity: 0.8;
+}
+
+.cell span{
+    display: block;
+    transform: translateY(70%);
+}
+
+img{
+    width: 100%;
+    height: 100%;
+    border: 1px solid black;
+}
+
+.images{
+    width: 100px;
+    height: 100px;
+}

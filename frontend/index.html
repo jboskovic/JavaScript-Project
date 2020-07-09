@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Puzzle</title>
+
+    <meta charset='UTF-8' />
+    <meta name='author' content='Jovana Boskovic' />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+
+    <link rel='stylesheet' type='text/css' href='style.css'>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script type='text/javascript' src='organized.js'></script>
+
+
+</head>
+
+<body onload="startNewGame()">
+    <div class='container  justify-content-center mainDiv'>
+        <div class='sideLeft'>
+            <div class='btnSide'>
+                <!-- <button type='button' onclick='GameArea.start()' class='btn_group'>Start</button>-->
+                <div class='form-group'>
+                    <button type='button' onclick='GameArea.restart()' class='btn btn-primary btn-lg'>Restart</button>
+                </div>
+                <div class='form-group'>
+                    <button type='button' onclick='GameArea.show()' class='btn btn-primary btn-lg'>Show</button>
+                </div>
+
+            </div>
+            <div class='image_holder'>
+                <img onclick='GameArea.image(this.id, this.src)' src='images/Friends/Friends.jpg' class='images'
+                    id='Friends'>
+                <img onclick='GameArea.image(this.id, this.src)' src='images/LiloAndStitch/LiloAndStitch.jpg'
+                    class='images' id='LiloAndStitch'>
+                <img onclick='GameArea.image(this.id, this.src)' src='images/TheLionKing/TheLionKing.jpg' class='images'
+                    id='TheLionKing'>
+                <img onclick='GameArea.image(this.id, this.src)' src='images/TheSimpsons/TheSimpsons.jpg' class='images'
+                    id='TheSimpsons'>
+
+            </div>
+
+        </div>
+        <div class='sideCentar'>
+            <div id='game_window'>
+                <div id='game'>
+
+                </div>
+                <div id='game_solved'>
+
+                </div>
+
+            </div>
+
+            <div id='score'>
+                <p id='scoreText'> </p>
+            </div>
+        </div>
+
+        <div class='sideRight'>
+            <div id='image_help'>
+                <img src='images/Friends/Friends.jpg'>
+            </div>
+            <div class='formClass'>
+                <form>
+                    <input type='text' placeholder="username">
+                    <button>Submit</button>
+                </form>
+            </div>
+
+            <div class='scoreList'>
+                <label>Nesto1</label>
+                <br>
+                <label>Nesto1</label>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+</body>
+
+</html>
