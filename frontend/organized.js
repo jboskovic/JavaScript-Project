@@ -164,7 +164,7 @@ class Puzzle {
             for (let j = 0; j < 3; j++)
                 tmp[i][j] = array[k++];
 
-        return tmp;
+        return  tmp;
     }
 
 
