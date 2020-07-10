@@ -29,8 +29,11 @@ app.use(json());
 app.use(urlencoded({ extended: false }));
 app.use(cors(corsOptions));
 
-const usersRoutes = require('./routes/api/users');
-app.use('/users', usersRoutes);
+//const usersRoutes = require('./routes/api/users');
+//app.use('/users', usersRoutes);
+const controller = require('./controllers/usersController');
+app.get('/users', controller.getScoresSorted);
+app.post('/users', controller.insertScore);
 
 app.use(function (req, res, next) {
     const error = new Error('Request is not accepted!');
