@@ -55,25 +55,21 @@
             </div>
 
             <div id='score'>
-                <p id='scoreText'> </p>
+                <p id='scoreText'>Moves: 0</p>
             </div>
+
         </div>
 
         <div class='sideRight'>
             <div id='image_help'>
-                <img src='images/Friends/Friends.jpg'>
+                <img id='imageSide' src='images/Friends/Friends.jpg'>
             </div>
             <div class='formClass'>
-                <form>
-                    <input type='text' placeholder="username">
-                    <button>Submit</button>
-                </form>
+                <input type='text' placeholder="user" id='username' name='username'>
+                <button onclick='onUserInsert()' class='btn btn-primary btn-sm'>Submit</button>
             </div>
-
-            <div class='scoreList'>
-                <label>Nesto1</label>
-                <br>
-                <label>Nesto1</label>
+            <hr>
+            <div id='scoreList'>
 
             </div>
 

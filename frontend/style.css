@@ -45,12 +45,18 @@ body{
     top: 10px;
 }
 .formClass{
+    /*display: none;*/
     position: relative;
     top: 20px;
 }
 .scoreList{
     position: relative;
     top:30px;
+}
+.scoreRank{
+    color : blue;
+    font-size : 25px;
+    font-family: "Comic Sans MS", cursive, sans-serif;
 }
 #image_help{
     position: relative;
@@ -64,6 +70,7 @@ body{
     font-size : 30px;
     font-family: "Comic Sans MS", cursive, sans-serif;
 }
+
 .row{
     height: 33.3%;
 }

@@ -1,21 +1,17 @@
 'use strict';
 
-let srcImage = {
-    src_part: "images/Friends/",
-    src_picture: "images/Friends/Friends.jpg"
-}
 
-let gameInfo = {
-    gameStarted: 0,
-    interval: 0,
-    timer_for_show: 0,
-    gameShow: 0,
-    tileMoved: 0,
-    win: 0,
-}
-
+let src_part = "images/Friends/";
+let src_picture = "images/Friends/Friends.jpg";
 let puzzle;
 let score;
+let gameStarted = 0;
+let Astar;
+let interval = 0;
+let timer_for_show = 0;
+let gameShow = 0;
+let tileMoved = 0;
+let win = 0;
 
 function startNewGame() {
     GameArea.start();
@@ -44,58 +40,51 @@ function presentScores() {
     });
 }
 var GameArea = {
-    initializeInfo: function () {
-        gameInfo.tileMoved = 0;
-        gameInfo.gameStarted = 1;
-        gameInfo.interval = 0;
-        gameInfo.timer_for_show = 0;
-        gameInfo.gameShow = 0;
-        gameInfo.win = 0;
-    },
-    initializeHtml: function () {
-        document.getElementById('username').value = '';
-        let formElement = document.getElementsByClassName('formClass')[0];
-        formElement.style.visibility = 'hidden';
-    },
     start: function () {
-        this.initializeInfo();
-        this.initializeHtml();
-        puzzle = new Puzzle(srcImage.src_part, srcImage.src_picture);
+        document.getElementById('username').value = ''
+        puzzle = new Puzzle(src_part, src_picture);
         score = new Score();
         puzzle.draw_puzzle();
+        tileMoved = 0;
+        gameStarted = 1;
+        interval = 0;
+        timer_for_show = 0;
+        gameShow = 0;
+        win = 0;
+        let formElement = document.getElementsByClassName('formClass')[0];
+        formElement.style.visibility = 'hidden';
         presentScores();
     },
     restart: function () {
-        if (gameInfo.gameStarted == 1) {
-            gameInfo.gameStarted = 0;
+        if (gameStarted == 1) {
+            gameStarted = 0;
             GameArea.start();
         }
     },
 
     image: function (id, src) {
-        if (gameInfo.tileMoved == 1) {
+        if (tileMoved == 1) {
             return;
         }
         puzzle.change_image(id, src);
     },
 
     tile: function (id) {
-        if (gameInfo.gameShow == 1 || gameInfo.win == 1) {
+        if (gameShow == 1 || win == 1) {
             return;
         }
-        gameInfo.tileMoved = 1;
+        tileMoved = 1;
         puzzle.tile_click(id);
         if (puzzle.check_game() == "WIN") {
-            gameInfo.win = 1;
+            win = 1;
             let formElement = document.getElementsByClassName('formClass')[0];
             formElement.style.visibility = 'visible';
         }
 
     },
     show: function () {
-        score.resetScore();
-        gameInfo.gameShow = 1;
-        let Astar = new astar(puzzle.getPuzzle());
+        gameShow = 1;
+        Astar = new astar(puzzle.getPuzzle());
         let moves = Astar.astarAlgorithm();
         if (moves == -1) {
             console.log("Nema resenja");
@@ -104,22 +93,22 @@ var GameArea = {
         console.log(moves);
 
         this.interval_function = function () {
-            if (gameInfo.interval < moves.length) {
-                puzzle.setPuzzle(moves[gameInfo.interval]);
-                gameInfo.interval++;
+            if (interval < moves.length) {
+                puzzle.setPuzzle(moves[interval]);
+                interval++;
                 puzzle.draw_puzzle();
                 score.incrementScore();
                 score.present("Moves: ");
             } else {
-                gameInfo.interval = 0;
-                window.clearInterval(gameInfo.timer_for_show);
-                gameInfo.win = 1;
-                gameInfo.gameShow = 0;
+                interval = 0;
+                window.clearInterval(timer_for_show);
+                win = 1;
+                gameShow = 0;
                 console.log("finished");
             }
         };
 
-        gameInfo.timer_for_show = window.setInterval(this.interval_function, 1000);
+        timer_for_show = window.setInterval(this.interval_function, 1000);
     },
 
 }
@@ -128,8 +117,8 @@ var GameArea = {
 
 class Puzzle {
     constructor(src_part, src_picture) {
-        this.src_picture = srcImage.src_picture;
-        this.src_part = srcImage.src_part;
+        this.src_picture = src_picture;
+        this.src_part = src_part;
         this.puzzle = this.shuffle([1, 2, 3, 4, 5, 6, 7, 8, 0]);
         this.win_puzzle = [[1, 2, 3], [4, 5, 6], [7, 8, 0]];
     }
@@ -164,7 +153,7 @@ class Puzzle {
             for (let j = 0; j < 3; j++)
                 tmp[i][j] = array[k++];
 
-        return tmp;
+        return [[1, 2, 3], [4, 5, 6], [7, 0, 8]];
     }
 
 
@@ -189,6 +178,12 @@ class Puzzle {
 
         grid += "</div>\n";
         grid += "</div>\n";
+
+        /*
+        grid += "<div id='image_help'>\n";
+        grid += "<img src='" + this.src_picture + "'>";
+        grid += "</div>"*/
+        document.getElementById('imageSide').style.src = this.src_picture;
 
         let elem = document.getElementById('game_window');
         if (typeof elem != 'undefined' && elem != null) {
@@ -276,7 +271,6 @@ class Puzzle {
             this.src_part = "images/LiloAndStitch/";
             this.draw_puzzle();
         }
-        document.getElementById('imageSide').src = this.src_picture;
     }
 
 }
@@ -297,9 +291,6 @@ class Score {
     }
     getScore() {
         return this.score;
-    }
-    resetScore() {
-        this.score = 0;
     }
 }
 

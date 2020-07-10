@@ -3,6 +3,6 @@ const router = express.Router();
 const controller = require('../../controllers/usersController');
 
 router.get('/', controller.getScoresSorted);
-router.put('/', controller.insertScore);
+router.post('/', controller.insertScore);
 
 module.exports = router;
